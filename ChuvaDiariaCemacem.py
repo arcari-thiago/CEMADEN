@@ -7,16 +7,25 @@ Created on Mon May 11 16:31:29 2020
 
 import pandas as pd
 
-filename = "mai2022.csv" #arquivo com os dados brutos do pluviógrafo
-test = pd.read_csv(filename, sep=';') #, error_bad_lines=False)
-test.columns=["datas","chuva"]
+filename = "jul2023.csv" # arquivo com os dados brutos do pluviógrafo
+local = "Rio Sangão"
 
-#blablalba
-chuva_diaria = test.groupby('datas').chuva.sum()
+# Leitura do arquivo CSV e conversão da coluna 'datahora' para tipo datetime
+dados = pd.read_csv(filename, sep=';', parse_dates=['datahora'])
 
-cdiaria = chuva_diaria.to_frame()
+# Filtragem das linhas com base no local
+dados_local = dados[dados['nomeEstacao'] == local]
 
-cdiaria2 = round(cdiaria, 2)
+# Transformações dos dados
+dados_local['Data'] = pd.to_datetime(dados_local['datahora']).dt.date
+dados_local['Precipitação (mm)'] = dados_local['valorMedida'].str.replace('.', '').str.replace(',', '.').astype(float)
 
+# Agrupamento e soma da precipitação diária
+chuva_diaria = dados_local.groupby('Data')['Precipitação (mm)'].sum()
 
-cdiaria2.to_csv('chuva_diaria_mai2022.csv')
+# Criar DataFrame com as colunas renomeadas
+chuva_diaria = chuva_diaria.reset_index().rename(columns={'Data': 'Data', 'Precipitação (mm)': 'Precipitação (mm)'})
+
+# Salvando os resultados em um arquivo Excel
+chuva_diaria.to_excel('chuva_diaria_jul2023.xlsx', index=False)
+
