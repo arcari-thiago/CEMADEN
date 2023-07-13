@@ -7,7 +7,7 @@ Created on Mon May 11 16:31:29 2020
 
 import pandas as pd
 
-filename = "mai2022.csv"
+filename = "mai2022.csv" #arquivo com os dados brutos do pluviógrafo
 test = pd.read_csv(filename, sep=';') #, error_bad_lines=False)
 test.columns=["datas","chuva"]
 
