@@ -6,8 +6,10 @@ Created on Mon May 11 16:31:29 2020
 """
 
 import pandas as pd
+import matplotlib.pyplot as plt
 
-filename = "jul2023.csv" # arquivo com os dados brutos do pluviógrafo
+
+filename = "jun2023.csv" # arquivo com os dados brutos do pluviógrafo
 local = "Rio Sangão"
 
 # Leitura do arquivo CSV e conversão da coluna 'datahora' para tipo datetime
@@ -27,5 +29,18 @@ chuva_diaria = dados_local.groupby('Data')['Precipitação (mm)'].sum()
 chuva_diaria = chuva_diaria.reset_index().rename(columns={'Data': 'Data', 'Precipitação (mm)': 'Precipitação (mm)'})
 
 # Salvando os resultados em um arquivo Excel
-chuva_diaria.to_excel('chuva_diaria_jul2023.xlsx', index=False)
+chuva_diaria.to_excel('chuva_diaria_jun2023.xlsx', index=False)
 
+
+# Criar o gráfico
+plt.figure(figsize=(12, 6))
+plt.bar(chuva_diaria['Data'], chuva_diaria['Precipitação (mm)'], width=0.2, color='dodgerblue')
+plt.title('Chuva Diária - Junho 2023')
+plt.xlabel('Data')
+plt.ylabel('Precipitação (mm)')
+plt.xticks(chuva_diaria['Data'], rotation=90, ha='right')
+plt.grid(False)
+plt.tight_layout()
+# Exibir o gráfico
+
+plt.show()
