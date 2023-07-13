@@ -11,7 +11,7 @@ filename = "mai2022.csv" #arquivo com os dados brutos do pluviógrafo
 test = pd.read_csv(filename, sep=';') #, error_bad_lines=False)
 test.columns=["datas","chuva"]
 
-
+#blablalba
 chuva_diaria = test.groupby('datas').chuva.sum()
 
 cdiaria = chuva_diaria.to_frame()
